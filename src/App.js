@@ -1,23 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import SignIn from "./Signin";
+import Register from "./Register";
+import { Switch, Route } from "react-router-dom";
+
+import PrivateRoute from "./PrivateRoute";
+
+import Dashboard from "./Dashboard";
 
 function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Switch>
+        <Route
+          exact
+          path="/"
+          render={(props) => (
+            <SignIn loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+          )}
+        />
+        <Route
+          exact
+          path="/register"
+          render={(props) => <Register {...props} />}
+        />
+
+        <PrivateRoute
+          exact
+          path="/dashboard"
+          component={Dashboard}
+          loggedIn={loggedIn}
+          setLoggedIn={setLoggedIn}
+        />
+      </Switch>
     </div>
   );
 }
